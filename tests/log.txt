@@ -4,75 +4,75 @@ MEMORY REPORT
 
 RAM (✗ = allocated, ✔ = free) 
 ---------------------------------------------
-0    None      16   ✗         32   4         48   3         
-1    None      17   -100      33   ✗         49   ✗         
-2    None      18   5         34   ✗         50   -100      
-3    None      19   ✗         35   41        51   6         
-4    None      20   ✗         36   3         52   ✗         
-5    -100      21   ✗         37   ✔         53   ✗         
-6    6         22   -100      38   -100      54   ✗         
-7    ✗         23   4         39   3         55   ✗         
-8    ✗         24   ✗         40   ✗         56   -100      
-9    ✗         25   ✗         41   -1        57   8         
-10   ✗         26   35        42   3         58   ✗         
-11   -100      27   5         43   ✔         59   ✗         
-12   6         28   ✔         44   -100      60   ✗         
-13   ✗         29   ✔         45   3         61   ✗         
-14   ✗         30   ✔         46   ✗         62   ✗         
-15   ✗         31   -100      47   -100      63   ✗         
+0    None      16   ✗         32   ✗         48   4         
+1    None      17   55        33   ✗         49   ✔         
+2    None      18   9         34   ✗         50   ✔         
+3    None      19   ✔         35   -100      51   -100      
+4    None      20   ✔         36   6         52   4         
+5    -100      21   ✔         37   ✗         53   ✗         
+6    5         22   ✔         38   ✗         54   ✗         
+7    ✗         23   ✔         39   ✗         55   44        
+8    ✗         24   ✔         40   ✗         56   5         
+9    ✗         25   ✔         41   -100      57   ✔         
+10   -100      26   -100      42   3         58   ✔         
+11   4         27   9         43   ✗         59   ✔         
+12   ✗         28   ✗         44   -1        60   17        
+13   ✗         29   ✗         45   3         61   4         
+14   -100      30   ✗         46   ✔         62   ✔         
+15   3         31   ✗         47   60        63   ✔         
 
 ALLOCATIONS LOG
 ---------------
-50.		alloc(4) -> -1
-49.		deAlloc(28)
-48.		alloc(3) -> -1
-47.		alloc(1) -> 28
-46.		alloc(1) -> 24
-45.		alloc(7) -> -1
-44.		alloc(3) -> 13
-43.		deAlloc(13)
-42.		deAlloc(24)
-41.		deAlloc(28)
-40.		alloc(3) -> -1
-39.		alloc(1) -> 40
-38.		alloc(2) -> 7
-37.		alloc(2) -> 33
-36.		alloc(3) -> 13
-35.		deAlloc(33)
-34.		alloc(1) -> 46
+50.		alloc(1) -> 53
+49.		deAlloc(53)
+48.		alloc(2) -> 53
+47.		deAlloc(49)
+46.		deAlloc(62)
+45.		deAlloc(19)
+44.		alloc(2) -> 62
+43.		deAlloc(57)
+42.		alloc(3) -> -1
+41.		alloc(6) -> -1
+40.		deAlloc(46)
+39.		alloc(4) -> None
+38.		alloc(6) -> None
+37.		alloc(6) -> None
+36.		alloc(4) -> None
+35.		alloc(3) -> 7
+34.		alloc(7) -> -1
 33.		alloc(6) -> -1
 32.		alloc(6) -> -1
-31.		alloc(2) -> 19
-30.		alloc(4) -> 52
-29.		deAlloc(52)
-28.		alloc(1) -> 49
-27.		deAlloc(49)
-26.		alloc(7) -> -1
-25.		alloc(1) -> 24
-24.		alloc(6) -> -1
-23.		alloc(5) -> -1
-22.		alloc(3) -> 28
-21.		deAlloc(24)
-20.		alloc(1) -> 49
-19.		deAlloc(46)
-18.		deAlloc(19)
-17.		deAlloc(13)
-16.		alloc(6) -> -1
-15.		alloc(7) -> -1
-14.		deAlloc(40)
-13.		alloc(7) -> -1
-12.		alloc(1) -> 40
-11.		deAlloc(37)
-10.		alloc(4) -> 13
-9.		alloc(3) -> 19
-8.		alloc(7) -> 24
-7.		alloc(2) -> 33
-6.		alloc(4) -> 37
-5.		deAlloc(43)
-4.		alloc(1) -> 43
-3.		alloc(4) -> 46
-2.		alloc(4) -> 52
-1.		alloc(6) -> 58
+31.		alloc(7) -> -1
+30.		deAlloc(7)
+29.		alloc(7) -> None
+28.		alloc(2) -> None
+27.		alloc(4) -> None
+26.		alloc(4) -> None
+25.		alloc(3) -> None
+24.		alloc(1) -> None
+23.		alloc(7) -> None
+22.		alloc(4) -> None
+21.		alloc(2) -> None
+20.		alloc(1) -> None
+19.		alloc(2) -> None
+18.		alloc(2) -> None
+17.		alloc(1) -> None
+16.		alloc(2) -> None
+15.		alloc(1) -> None
+14.		alloc(2) -> None
+13.		alloc(2) -> 7
+12.		alloc(7) -> -1
+11.		alloc(2) -> 12
+10.		alloc(1) -> 16
+9.		alloc(7) -> 19
+8.		alloc(7) -> 28
+7.		alloc(4) -> 37
+6.		alloc(1) -> 43
+5.		alloc(1) -> 46
+4.		alloc(6) -> 49
+3.		alloc(5) -> 57
+2.		deAlloc(57)
+1.		alloc(7) -> 57
 
 FAULTS
 ---------------------------------------------
@@ -82,4 +82,4 @@ Malformed free list?       NO
 
 FREE LIST
 ---------------------------------------------
-26 -> 35 -> 41
+47 -> 60 -> 17 -> 55 -> 44

@@ -113,14 +113,43 @@ class Memory:
 
         :param addr: A memory address pointing to the start of a segment of previously allocated memory.
         """
-        self._ram[addr- 2] = self._free
+        self._ram[addr - 2] = self._free
         self._free = addr - 2
         self._write_segment(self._free, TICK)
         self._log.insert(0, Dealloc(addr))
 
     def defrag(self):
-        """ Not Yet Implemented """
-        pass
+        """ Combines contiguous 'free' segments of memory, resulting in reduced RAM fragmentation.
+
+        The algorithm used here simply marches from one end of the heap to the other, collapsing contigous segments
+        as it encounters them, and updating the free-list accordingly. It's probably the slowest and simplest of
+        the available algorithms, but it has the advantage that even in the worst case it uses very little RAM.
+
+        Note that defrag is never called internally; if a client objects wants defragmentation (perhaps because a call
+        to alloc has returned None), that object must call this method itself.
+        """
+        location = self._heap_ptr
+        self._free = -1
+        previous_block_start = None
+        while location < len(self._ram):
+            if self._ram[location] != -100:
+                block_start = location
+                self._ram[block_start] = -1
+                block_width = self._ram[location + 1]
+                location += block_width
+                while location < len(self._ram) and self._ram[location] != -100:
+                    segment_width = self._ram[location + 1]
+                    block_width += segment_width
+                    self._ram[location:location+2] = ["✔", "✔"]
+                    location += segment_width
+                self._ram[block_start + 1] = block_width
+
+                if self._free == -1:
+                    self._free = block_start
+                else:
+                    self._ram[previous_block_start] = block_start
+                previous_block_start = block_start
+            location = location + self._ram[location + 1] if location < len(self._ram) else location
 
     def _peek(self, addr):
         """ Returns the value stored in the register referenced by `addr`.
@@ -279,13 +308,38 @@ class Memory:
             lines[register % 16] += "{:5}{:10}".format(str(register), str(value))
         return "\n".join(lines)
 
+    def __format__(self, format_spec):
+        """ Returns a string representation of the RAM chips' contents.
+
+        :param format_spec: for a single line description of the contents of the RAM chip set this value to 'short',
+        otherwise specify 'extended' for a richer description.
+        """
+        if format_spec == "short":
+            ram_string = ""
+            for value in self._ram:
+                ram_string += "N" if value is None else " {}".format(value)
+        else:
+            ram_string = str(self)
+
+        return ram_string
 
 if __name__ == "__main__":
-    # Sample use #
-    memory = Memory(size=128, heap_ptr=5)
-    addr = memory.alloc(5)
-    _ = memory.alloc(23)
-    memory.deAlloc(addr)
+    ## A ##
+    memory = Memory(size=32, heap_ptr=5)
+    a = memory.alloc(1) # 29
+    b = memory.alloc(1) # 26
+    c = memory.alloc(1) # 23
+    d = memory.alloc(1) # 20
+    e = memory.alloc(1) # 17
+    f = memory.alloc(1) # 14
+    g = memory.alloc(1) # 11
+    h = memory.alloc(1) # 8
+    i = memory.alloc(1) # 5
+
+    memory.deAlloc(b)
+    memory.deAlloc(a)
+    memory.deAlloc(h)
+    memory.deAlloc(f)
 
     proj_dir = Path(os.path.dirname(__file__)).parent
     print("Repairs needed: {}".format(memory.needs_repairs(proj_dir / "tests" / "log.txt") == True))
