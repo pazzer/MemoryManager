@@ -4,74 +4,33 @@ MEMORY REPORT
 
 RAM (✗ = allocated, ✔ = free) 
 ---------------------------------------------
-0    None      16   ✗         32   ✗         48   4         
-1    None      17   55        33   ✗         49   ✔         
-2    None      18   9         34   ✗         50   ✔         
-3    None      19   ✔         35   -100      51   -100      
-4    None      20   ✔         36   6         52   4         
-5    -100      21   ✔         37   ✗         53   ✗         
-6    5         22   ✔         38   ✗         54   ✗         
-7    ✗         23   ✔         39   ✗         55   44        
-8    ✗         24   ✔         40   ✗         56   5         
-9    ✗         25   ✔         41   -100      57   ✔         
-10   -100      26   -100      42   3         58   ✔         
-11   4         27   9         43   ✗         59   ✔         
-12   ✗         28   ✗         44   -1        60   17        
-13   ✗         29   ✗         45   3         61   4         
-14   -100      30   ✗         46   ✔         62   ✔         
-15   3         31   ✗         47   60        63   ✔         
+0    None      16   ✔         32   ✗         48   ✔         
+1    None      17   ✔         33   ✗         49   ✔         
+2    None      18   ✔         34   ✗         50   ✔         
+3    None      19   ✔         35   ✗         51   ✔         
+4    None      20   -100      36   ✗         52   ✔         
+5    -1        21   7         37   -100      53   ✔         
+6    4         22   ✗         38   6         54   ✔         
+7    ✔         23   ✗         39   ✗         55   43        
+8    ✔         24   ✗         40   ✗         56   9         
+9    55        25   ✗         41   ✗         57   ✔         
+10   11        26   ✗         42   ✗         58   ✔         
+11   ✔         27   -100      43   5         59   ✔         
+12   ✔         28   10        44   12        60   ✔         
+13   ✔         29   ✗         45   ✔         61   ✔         
+14   ✔         30   ✗         46   ✔         62   ✔         
+15   ✔         31   ✗         47   ✔         63   ✔         
 
 ALLOCATIONS LOG
 ---------------
-50.		alloc(1) -> 53
-49.		deAlloc(53)
-48.		alloc(2) -> 53
-47.		deAlloc(49)
-46.		deAlloc(62)
-45.		deAlloc(19)
-44.		alloc(2) -> 62
-43.		deAlloc(57)
-42.		alloc(3) -> -1
-41.		alloc(6) -> -1
-40.		deAlloc(46)
-39.		alloc(4) -> None
-38.		alloc(6) -> None
-37.		alloc(6) -> None
-36.		alloc(4) -> None
-35.		alloc(3) -> 7
-34.		alloc(7) -> -1
-33.		alloc(6) -> -1
-32.		alloc(6) -> -1
-31.		alloc(7) -> -1
-30.		deAlloc(7)
-29.		alloc(7) -> None
-28.		alloc(2) -> None
-27.		alloc(4) -> None
-26.		alloc(4) -> None
-25.		alloc(3) -> None
-24.		alloc(1) -> None
-23.		alloc(7) -> None
-22.		alloc(4) -> None
-21.		alloc(2) -> None
-20.		alloc(1) -> None
-19.		alloc(2) -> None
-18.		alloc(2) -> None
-17.		alloc(1) -> None
-16.		alloc(2) -> None
-15.		alloc(1) -> None
-14.		alloc(2) -> None
-13.		alloc(2) -> 7
-12.		alloc(7) -> -1
-11.		alloc(2) -> 12
-10.		alloc(1) -> 16
-9.		alloc(7) -> 19
-8.		alloc(7) -> 28
-7.		alloc(4) -> 37
-6.		alloc(1) -> 43
-5.		alloc(1) -> 46
-4.		alloc(6) -> 49
-3.		alloc(5) -> 57
-2.		deAlloc(57)
+9.		deAlloc(11)
+8.		deAlloc(57)
+7.		deAlloc(45)
+6.		alloc(9) -> 11
+5.		alloc(5) -> 22
+4.		alloc(8) -> 29
+3.		alloc(4) -> 39
+2.		alloc(10) -> 45
 1.		alloc(7) -> 57
 
 FAULTS
@@ -82,4 +41,4 @@ Malformed free list?       NO
 
 FREE LIST
 ---------------------------------------------
-47 -> 60 -> 17 -> 55 -> 44
+9 -> 55 -> 43 -> 5

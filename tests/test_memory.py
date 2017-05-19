@@ -149,6 +149,7 @@ class TestMemory(unittest.TestCase):
 
 
     # Defragmentation
+
     def test_defrag_possible_a(self):
         """ Examines result of memory.defrag() on a RAM chip that can be defragmentated. """
         before_defrag = "NNNNN -100 3 ✗ 20 3 ✔ 29 3 ✔ 8 3 ✔ -100 3 ✗ 11 3 ✔ -100 3 ✗ -1 3 ✔ 26 3 ✔"

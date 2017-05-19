@@ -17,6 +17,7 @@ import os.path
 
 Alloc = namedtuple("Alloc", "size addr")
 Dealloc = namedtuple("Dealloc", "addr")
+RepairsChecklist = namedtuple("RepairsChecklist", "malformed_segments bad_register_count malformed_freelist")
 
 TICK = "✔"
 CROSS = "✗"
@@ -240,20 +241,45 @@ class Memory:
                 report += "{}.\t\talloc({}) -> {}\n".format(timing, entry.size, entry.addr)
         return report
 
+    def _report_string(self, repairs_checklist=None):
+        """ Returns a string summarising the internal state of receiver (See status_report for details.
 
-    def needs_repairs(self, report_path=None):
-        """ Determines whether or not the ram-chip is in a consistent state.
-
-        Comprises the following checks:
-        1. Does the total number of allocated segments, added to the total number of unallocated segments, added to the
-         size of the stack, total the size of the chip?
-        2. Is every 'free' memory segment referenced in the free_list?
-        3. Do all identifiable memory segments have the expected structure (see free_list)
-
-        :param report_path: a Path object referencing a file to which the generated repairs log can be written. If no
-        path is provided no report is created.
-        :return: True if any one of the three consistency checks fails, False otherwise (indicating a healthy chip).
+        :param path: A RepairsChecklist namedtuple; if none is provided a call to _health_check is made to generate
+        one.
         """
+        checklist = self._health_check() if repairs_checklist is None else repairs_checklist
+
+        div = "-" * 45
+        report = "- - - - - - - \nMEMORY REPORT\n- - - - - - - \n\n"
+        report += "RAM (✗ = allocated, ✔ = free) \n{}\n{}\n\n{}\n".format(div, self, self.log)
+        report += "FAULTS\n{}\n".format(div)
+        report += "Any Malformed segments?    {}\n".format("YES" if checklist.malformed_segments else "NO")
+        report += "Unexpected register count? {}\n".format("YES" if checklist.bad_register_count else "NO")
+        report += "Malformed free list?       {}\n".format("YES" if checklist.malformed_freelist else "NO")
+        report += "\nFREE LIST\n{}\n".format(div)
+        report += " -> ".join([str(i) for i in self._free_list])
+
+        return report
+
+    def status_report(self, path=None):
+        """ Returns a string summarising the internal state of receiver.
+
+        The returned string reproduces the contents of the RAM chip and the sequence of all of the alloc() and
+        deAlloc() calls that the Memory instance has received. It also outputs the results of the tests that contribute
+        to the return value of the  method needs_repairs.
+
+        :param path: a Path object (NOT a string) referencing a file to which the generated report can be written.
+        """
+        report = self._report_string()
+
+        if path is not None:
+            with open(path.as_posix(), "w+") as logfile:
+                logfile.write(report)
+
+        return report
+
+    def _health_check(self):
+        """ Runs the checks described in needs_repairs. """
         malformed_segments = False
         malformed_free_list = None
         bad_register_count = None
@@ -285,21 +311,30 @@ class Memory:
         bad_register_count = unallocated_register_count + allocated_register_count + self.stack_size != len(self._ram)
         malformed_free_list = sorted(self._free_list) != indexes_of_unallocated_segments
 
+        return RepairsChecklist(malformed_segments, bad_register_count, malformed_free_list)
+
+    def needs_repairs(self, path=None):
+        """ Determines whether or not the ram-chip is in a consistent state.
+
+        Comprises the following checks:
+        1. Does the total number of allocated segments, added to the total number of unallocated segments, added to the
+         size of the stack, total the size of the chip?
+        2. Is every 'free' memory segment referenced in the free_list?
+        3. Do all identifiable memory segments have the expected structure (see free_list)
+
+        :param path: a Path object referencing a file to which the generated repairs log can be written. If no
+        path is provided no report is created.
+        :return: True if any one of the three consistency checks fails, False otherwise (indicating a healthy chip).
+        """
+        health_check = self._health_check()
+
         # Report (if requested)
-        if report_path is not None:
-            with open(report_path.as_posix(), "w+") as logfile:
-                div = "-" * 45
-                report = "- - - - - - - \nMEMORY REPORT\n- - - - - - - \n\n"
-                report += "RAM (✗ = allocated, ✔ = free) \n{}\n{}\n\n{}\n".format(div, self, self.log)
-                report += "FAULTS\n{}\n".format(div)
-                report += "Any Malformed segments?    {}\n".format("YES" if malformed_segments else "NO")
-                report += "Unexpected register count? {}\n".format("YES" if bad_register_count else "NO")
-                report += "Malformed free list?       {}\n".format("YES" if malformed_free_list else "NO")
-                report += "\nFREE LIST\n{}\n".format(div)
-                report += " -> ".join([str(i) for i in self._free_list])
+        if path is not None:
+            report = self._report_string(health_check)
+            with open(path.as_posix(), "w+") as logfile:
                 logfile.write(report)
 
-        return malformed_segments | bad_register_count | malformed_free_list
+        return health_check.bad_register_count | health_check.malformed_freelist | health_check.malformed_segments
 
     def __str__(self):
         """ A string representation of the contents of the entire memory unit. """
@@ -325,20 +360,16 @@ class Memory:
 
 if __name__ == "__main__":
     ## A ##
-    memory = Memory(size=32, heap_ptr=5)
-    a = memory.alloc(1) # 29
-    b = memory.alloc(1) # 26
-    c = memory.alloc(1) # 23
-    d = memory.alloc(1) # 20
-    e = memory.alloc(1) # 17
-    f = memory.alloc(1) # 14
-    g = memory.alloc(1) # 11
-    h = memory.alloc(1) # 8
-    i = memory.alloc(1) # 5
+    memory = Memory(size=64, heap_ptr=5)
+    a = memory.alloc(7)
+    b = memory.alloc(10)
+    c = memory.alloc(4)
+    d = memory.alloc(8)
+    e = memory.alloc(5)
+    f = memory.alloc(9)
 
     memory.deAlloc(b)
     memory.deAlloc(a)
-    memory.deAlloc(h)
     memory.deAlloc(f)
 
     proj_dir = Path(os.path.dirname(__file__)).parent
