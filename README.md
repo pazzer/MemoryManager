@@ -2,7 +2,7 @@
 
 This small project explores the mechanics of memory management from the point of view of the operating system. The 
 principal class - ``Memory`` - is the guardian of a single RAM chip, and as such is responsible for handling ``alloc`` 
-``deAlloc``, and ``defrag`` requests as they arrive.
+``deAlloc``, and ``defrag`` requests as they arrive<sup>[1](#caveat)</sup>.
 
 The project began life as part of the coursework for the *Coursera* course *Nand2Tetris Part 2*, during which students 
 are asked to implement one of two memory allocation algorithms (*first-fit* or *best-fit*) in a simple programming 
@@ -14,7 +14,7 @@ implement them in Jack, and then, for good measure, implemented an additional me
 To get to grips with the project, I recommend two approaches: (i) experimenting directly with the ``Memory`` class and 
 (ii) probing this class via unittests.
 
-#### The ``Memory`` Class
+### The ``Memory`` Class
 
 The principal class in this project is the ``Memory`` class, which exposes three key public methods: ``alloc``, 
 ``deAlloc``, and ``defrag``. You can call these as many times as you like, and in any order. To see how a sequence of 
@@ -37,7 +37,7 @@ memory.deAlloc(f)
 print(memory.status_report())
 ```
 
-#### Testing
+### Testing
 
 If you want to examine the class in more detail, you should think about doing so through unittests. The current test 
 suite  consists of a single class ``TestMemory`` which probes the reliability and predictablity of the methods that make
@@ -48,11 +48,10 @@ To run these tests execute the following command:
 $ tests/test_memory.py
 ```
 
-## A Quick *Heads-Up*
+<a name="caveat">1</a>: It's worth pointing out that although the memory-management algorithms used here are sound, 
+the set-up overall is somewhat fanciful. For example, in real-world systems the processes responsible for managing RAM 
+would themselves use that RAM for their own execution. In this set-up by contrast the ``Memory`` object is assumed to 
+have access to some separate resource that allows it to operate irrespective of how much or how little space is 
+available on its chip. I make no apologies for this short-coming or others like it: ultimately the aim of the project is 
+to examine the algorithms involved in memory management not to create a faithful model of computer memory.
 
-It's worth pointing out that although the memory-management algorithms used here are sound, the set-up overall is 
-somewhat fanciful. For example, in real-world systems the processes responsible for managing RAM would themselves use 
-that RAM for their own execution. In this set-up by contrast the ``Memory`` object is assumed to have access to some 
-separate resource that allows it to operate irrespective of how much or how little space is available on its chip. I 
-make no apologies for this short-coming or others like it: ultimately the aim of the project is to examine the 
-algorithms involved in memory management not to create a faithful model of computer memory.
