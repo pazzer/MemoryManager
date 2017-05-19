@@ -1,20 +1,28 @@
 # Introducing MemoryManager
 
-This small project explores the mechanics of memory management from the point of view of the operating system. The 
-principal class - ``Memory`` - is the guardian of a single RAM chip, and as such is responsible for handling ``alloc`` 
-``deAlloc``, and ``defrag`` requests as they arrive<sup>[1](#caveat)</sup>.
+This small project explores the mechanics of memory management from the point of view of the operating system. It began 
+life as part of the coursework for the *Coursera* course *Nand2Tetris Part 2*, during which students are asked to write
+code that ultimately becomes part of a rudimentary operating system called *Hack*.
 
-The project began life as part of the coursework for the *Coursera* course *Nand2Tetris Part 2*, during which students 
-are asked to implement one of two memory allocation algorithms (*first-fit* or *best-fit*) in a simple programming 
-language called Jack. I decided to write a Python version of the first of these two algorithms to get a feel for how to 
-implement them in Jack, and then, for good measure, implemented an additional memory defragmentation algorithm. 
+The coursework required that each student write thir own implementation of the *first-fit* memory allocation algorithm
+in a programming language called Jack. I decided to write a Python version of this algorithm first, and then for good
+measure, implmented an additional memory defragmentation algorithm. Finally, rather than leave these two functions
+as isolated chunks of code I decided to wrap them up in a single ``Memory`` class and create a simulation of the 
+process/processes that handle ``alloc`` and ``deAlloc`` calls in a real operating system.
+
+It's worth pointing out that although the memory-management algorithms used here are sound, 
+the set-up overall is somewhat fanciful. For example, in real-world systems the processes responsible for managing RAM 
+would themselves use that RAM for their own execution. In this set-up by contrast the ``Memory`` object is assumed to 
+have access to some separate resource that allows it to operate irrespective of how much or how little space is 
+available on its chip. I make no apologies for this short-coming or others like it: ultimately the aim of the project is 
+to examine the algorithms involved in memory management, not to create a faithful model of computer memory.
 
 ## Exploring the Project
 
 To get to grips with the project, I recommend two approaches: (i) experimenting directly with the ``Memory`` class and 
 (ii) probing this class via unittests.
 
-### The ``Memory`` Class
+### Probing ``Memory`` Directly
 
 The principal class in this project is the ``Memory`` class, which exposes three key public methods: ``alloc``, 
 ``deAlloc``, and ``defrag``. You can call these as many times as you like, and in any order. To see how a sequence of 
@@ -37,7 +45,7 @@ memory.deAlloc(f)
 print(memory.status_report())
 ```
 
-### Testing
+### Probing ``Memory`` with Unittests 
 
 If you want to examine the class in more detail, you should think about doing so through unittests. The current test 
 suite  consists of a single class ``TestMemory`` which probes the reliability and predictablity of the methods that make
@@ -47,11 +55,4 @@ To run these tests execute the following command:
 ```
 $ tests/test_memory.py
 ```
-
-<a name="caveat">1</a>: It's worth pointing out that although the memory-management algorithms used here are sound, 
-the set-up overall is somewhat fanciful. For example, in real-world systems the processes responsible for managing RAM 
-would themselves use that RAM for their own execution. In this set-up by contrast the ``Memory`` object is assumed to 
-have access to some separate resource that allows it to operate irrespective of how much or how little space is 
-available on its chip. I make no apologies for this short-coming or others like it: ultimately the aim of the project is 
-to examine the algorithms involved in memory management not to create a faithful model of computer memory.
 
