@@ -19,8 +19,12 @@ to examine the algorithms involved in memory management, not to create a faithfu
 
 ## Exploring the Project
 
-To get to grips with the project, I recommend two approaches: (i) experimenting directly with the ``Memory`` class and 
-(ii) probing this class via unittests.
+To get to grips with the project, I recommend that you first read all of the docstrings in the ``memory.py``. This will
+provide you with all you need to know about the simulation and make experimentation with the code a much more fruitful
+experience.
+
+Once you've gone through the documentation you're reading to start probing the code. I recommend two approaches here: 
+(i) experiment directly with the ``Memory`` class and (ii) probe this class via unittests.
 
 ### Probing ``Memory`` Directly
 
